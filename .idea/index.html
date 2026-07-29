@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Zeynep & Kaan - Düğün Davetiyesi</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Cormorant+Garamond:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --env-bg: #5c6248;       /* Zarf yeşili */
+            --env-dark: #4a5038;     /* Zarf gölgesi */
+            --card-bg: #fdfbf7;      /* Davetiye kremi */
+            --text-dark: #3a3b35;    /* Yazı rengi */
+            --gold: #b9975b;         /* Altın yaldız */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--env-bg);
+            color: var(--text-dark);
+            font-family: 'Montserrat', sans-serif;
+            transition: background-color 1.5s ease;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden; /* Animasyon bitene kadar kaydırma yok */
+        }
+
+        body.is-opened {
+            background-color: var(--card-bg);
+            overflow-y: auto; /* Animasyon sonrası dikey kaydırma aktif */
+            overflow-x: hidden;
+        }
+
+        /* Arka Plan Sarmaşıkları */
+        .vine {
+            position: fixed;
+            top: 0;
+            width: 150px;
+            height: 100vh;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 2s ease 1.5s;
+            z-index: 1;
+        }
+        .vine.left { left: 0; }
+        .vine.right { right: 0; transform: scaleX(-1); }
+
+        body.is-opened .vine {
+            opacity: 0.6; /* Sadece kart açılınca görünür */
+        }
+
+        /* Zarf ve Kart Konteyneri */
+        .wrapper {
+            position: relative;
+            width: 360px;
+            height: 240px;
+            margin-top: 150px; /* Ortalamak için */
+            cursor: pointer;
+            z-index: 10;
+            transition: transform 1.5s ease;
+        }
+
+        body.is-opened .wrapper {
+            cursor: default;
+            transform: translateY(120px); /* Kart çıkarken zarf hafif aşağı iner */
+        }
+
+        .instruction {
+            position: absolute;
+            top: -50px;
+            width: 100%;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            animation: breathe 2s infinite ease-in-out;
+            transition: opacity 0.5s ease;
+        }
+
+        @keyframes breathe {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        body.is-opened .instruction {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Zarf Arka Yüzü */
+        .envelope-back {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: var(--env-dark);
+            border-radius: 4px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            transition: opacity 1.5s ease 1s;
+        }
+
+        /* Davetiye Kartı */
+        .card {
+            position: absolute;
+            bottom: 0;
+            left: 20px;
+            width: 320px;
+            height: 500px;
+            background-color: var(--card-bg);
+            border-radius: 2px;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-80px); /* KARTIN YARISI YUKARIDA ÇIKIK */
+            transition: transform 2s cubic-bezier(0.34, 1.15, 0.64, 1), box-shadow 2s ease;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px 30px;
+            text-align: center;
+        }
+
+        body.is-opened .card {
+            transform: translateY(-260px); /* KART TAMAMEN YUKARI ÇIKAR */
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+
+        /* Zarf Ön Yüzü (Cep) */
+        .envelope-front {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%; height: 170px;
+            background-color: var(--env-bg);
+            border-radius: 0 0 4px 4px;
+            z-index: 3;
+            clip-path: polygon(0 15%, 50% 0, 100% 15%, 100% 100%, 0 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 35px;
+            transition: opacity 1.5s ease 1s;
+        }
+
+        body.is-opened .envelope-back,
+        body.is-opened .envelope-front {
+            opacity: 0; /* Zarf kaybolur */
+        }
+
+        /* Zarf Yazıları */
+        .env-leaf {
+            width: 35px; height: 35px;
+            fill: var(--gold);
+            margin-bottom: 5px;
+        }
+        .env-names {
+            font-family: 'Great Vibes', cursive;
+            color: var(--gold);
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        .env-date {
+            font-size: 0.65rem;
+            color: rgba(255,255,255,0.7);
+            letter-spacing: 2px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Kart İçi Tipografi */
+        .card-leaf {
+            width: 35px; height: 35px;
+            fill: var(--gold);
+            margin-bottom: 15px;
+        }
+        .thanks {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.6rem;
+            margin-bottom: 25px;
+            color: var(--text-dark);
+        }
+        .families {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.85rem;
+            letter-spacing: 1.5px;
+            line-height: 2;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+        .couple-names {
+            font-family: 'Great Vibes', cursive; /* El yazısı Zeynep Kaan */
+            font-size: 2.8rem;
+            color: var(--gold);
+            margin-bottom: 25px;
+            line-height: 1;
+        }
+        .quote {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.6rem;
+            line-height: 1.4;
+            margin-bottom: 35px;
+        }
+        .details {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.9rem;
+            letter-spacing: 1.5px;
+            line-height: 1.8;
+            text-transform: uppercase;
+        }
+        .venue {
+            font-weight: 600;
+        }
+
+        /* Harita Butonu */
+        .btn-map {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 30px;
+            padding: 12px 24px;
+            border: 1px solid var(--gold);
+            border-radius: 4px;
+            background: transparent;
+            color: var(--text-dark);
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s ease, opacity 1s ease 1.5s; /* Kart açıldıktan sonra görünür */
+        }
+
+        body.is-opened .btn-map {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .btn-map:hover {
+            background-color: var(--gold);
+            color: #fff;
+        }
+        .btn-map svg {
+            width: 14px; height: 14px;
+            margin-right: 8px;
+            fill: currentColor;
+        }
+
+        /* Mobil Uyumluluk */
+        @media (max-width: 400px) {
+            .wrapper { transform: scale(0.9); margin-top: 100px; }
+            body.is-opened .wrapper { transform: scale(0.9) translateY(80px); }
+        }
+        @media (max-height: 700px) {
+            .wrapper { margin-top: 100px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sol Sarmaşık SVG -->
+<svg class="vine left" viewBox="0 0 100 500" xmlns="http://www.w3.org/2000/svg">
+    <path d="M 0 0 Q 30 100 10 200 T 30 400 T 0 500" fill="none" stroke="var(--gold)" stroke-width="1" opacity="0.6"/>
+    <path d="M 10 50 Q 25 40 30 55 Q 15 65 10 50" fill="var(--gold)" opacity="0.5"/>
+    <path d="M 15 150 Q 35 135 40 155 Q 25 170 15 150" fill="var(--gold)" opacity="0.5"/>
+    <path d="M 5 250 Q 20 240 25 255 Q 10 265 5 250" fill="var(--gold)" opacity="0.5"/>
+    <path d="M 18 350 Q 35 335 40 355 Q 25 370 18 350" fill="var(--gold)" opacity="0.5"/>
+    <path d="M 8 450 Q 25 435 30 455 Q 15 470 8 450" fill="var(--gold)" opacity="0.5"/>
+</svg>
+
+<!-- Sağ Sarmaşık SVG -->
+<svg class="vine right" viewBox="0 0 100 500" xmlns="http://www.w3.org/2000/svg">
+    <path d="M 0 0 Q 30 100 10 200 T 30 400 T 0 500" fill="none" stroke="var(--gold)" stroke-width="1" opacity="0.6"/>
+    <path d="M 10 50 Q 25 40 30 55 Q 15 65 10 50" fill="var(--gold)" opacity="0.5"/>
+    <path d="M 15 150 Q 35 135 40 155 Q 25 170 15 150" fill="var(--gold)" opacity="0.5"/>
+    <path d="M 5 250 Q 20 240 25 255 Q 10 265 5 250" fill="var(--gold)" opacity="0.5"/>
+    <path d="M 18 350 Q 35 335 40 355 Q 25 370 18 350" fill="var(--gold)" opacity="0.5"/>
+    <path d="M 8 450 Q 25 435 30 455 Q 15 470 8 450" fill="var(--gold)" opacity="0.5"/>
+</svg>
+
+<div class="wrapper" id="wrapper">
+    <div class="instruction" id="instruction">Davetiyeyi Açmak İçin Tıklayın</div>
+
+    <div class="envelope-back"></div>
+
+    <div class="card" id="card">
+        <!-- Yaprak İkonu -->
+        <svg class="card-leaf" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 80 C 40 70, 20 50, 25 30 C 30 10, 50 20, 50 40 C 50 20, 70 10, 75 30 C 80 50, 60 70, 50 80 Z" opacity="0.8"/>
+            <path d="M50 40 L 50 85" stroke="var(--card-bg)" stroke-width="2" fill="none"/>
+        </svg>
+
+        <div class="thanks">teşekkür ederiz</div>
+
+        <div class="families">
+            AYŞEGÜL - FATİH KIZILDAĞ AİLESİ<br>
+            GÜLAY - ALİ DİZİBÜYÜK AİLESİ
+        </div>
+
+        <div class="couple-names">Zeynep - Kaan</div>
+
+        <div class="quote">
+            Bu mutlu günümüzde sizleri de<br>
+            aramızda görmekten büyük<br>
+            mutluluk duyacağız.
+        </div>
+
+        <div class="details">
+            <div class="venue">MARİNA</div>
+            15 AĞUSTOS 2026 Cumartesi<br>
+            19.00
+        </div>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=MARİNA+DÜĞÜN+SALONU+KAHRAMANMARAŞ" target="_blank" class="btn-map">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            </svg>
+            Haritada Gör
+        </a>
+    </div>
+
+    <div class="envelope-front">
+        <!-- Zarf Üzeri Yaprak İkonu -->
+        <svg class="env-leaf" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 80 C 40 70, 20 50, 25 30 C 30 10, 50 20, 50 40 C 50 20, 70 10, 75 30 C 80 50, 60 70, 50 80 Z"/>
+        </svg>
+        <div class="env-names">Zeynep - Kaan</div>
+        <div class="env-date">15 AĞUSTOS 2026</div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const body = document.body;
+        const wrapper = document.getElementById('wrapper');
+
+        wrapper.addEventListener('click', () => {
+            if (!body.classList.contains('is-opened')) {
+                body.classList.add('is-opened');
+            }
+        });
+    });
+</script>
+</body>
+</html>
