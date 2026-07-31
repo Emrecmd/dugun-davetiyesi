@@ -29,7 +29,7 @@
             background-color: var(--env-bg);
             color: var(--text-dark);
             font-family: 'Montserrat', sans-serif;
-            transition: background-color 1.5s ease;
+            transition: background-color 1.2s ease;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -59,7 +59,7 @@
 
         body.is-opened .vine {
             opacity: 0.6;
-            transition: opacity 2s ease 2.5s;
+            transition: opacity 1.6s ease 2s;
         }
 
         /* Zarf ve Kart Konteyneri */
@@ -70,7 +70,7 @@
             margin-top: 150px;
             cursor: pointer;
             z-index: 10;
-            transition: transform 1.5s ease;
+            transition: transform 1.2s ease;
         }
 
         body.is-opened .wrapper {
@@ -88,7 +88,7 @@
             letter-spacing: 3px;
             text-transform: uppercase;
             animation: breathe 2s infinite ease-in-out;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.4s ease;
         }
 
         @keyframes breathe {
@@ -109,7 +109,7 @@
             background-color: var(--env-dark);
             border-radius: 4px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-            transition: opacity 1.5s ease 1s;
+            transition: opacity 1.2s ease 0.8s;
         }
 
         /* Davetiye Kartı */
@@ -118,12 +118,12 @@
             bottom: 0;
             left: 20px;
             width: 320px;
-            height: 590px; /* Butona yer açmak için uzatıldı */
+            height: 590px;
             background-color: var(--card-bg);
             border-radius: 2px;
             box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
             transform: translateY(-80px);
-            transition: transform 2s cubic-bezier(0.34, 1.15, 0.64, 1), box-shadow 2s ease;
+            transition: transform 1.6s cubic-bezier(0.34, 1.15, 0.64, 1), box-shadow 1.6s ease;
             z-index: 2;
             display: flex;
             flex-direction: column;
@@ -141,7 +141,7 @@
         /* 2. Aşama: Zarf kaybolduktan sonra kartın merkeze geri inmesi */
         body.is-centered .card {
             transform: translateY(-130px);
-            transition: transform 1.5s ease-in-out;
+            transition: transform 1.2s ease-in-out;
         }
 
         /* Zarf Ön Yüzü (Cep) */
@@ -157,7 +157,7 @@
             flex-direction: column;
             align-items: center;
             padding-top: 35px;
-            transition: opacity 1.5s ease 1s;
+            transition: opacity 1.2s ease 0.8s;
         }
 
         /* GÖRÜNMEYEN ZARFIN TIKLAMALARI ENGELLEMEMESİ İÇİN POINTER-EVENTS: NONE EKLENDİ */
@@ -241,8 +241,8 @@
         .btn-map {
             display: inline-flex;
             align-items: center;
-            margin-top: auto; /* DİĞER YAZILARDAN AYIRIP EN ALTA İTER */
-            margin-bottom: 10px; /* ALTTAN BİRAZ BOŞLUK BIRAKIR */
+            margin-top: auto;
+            margin-bottom: 10px;
             padding: 12px 24px;
             border: 1px solid var(--gold);
             border-radius: 4px;
@@ -255,7 +255,7 @@
             text-transform: uppercase;
             opacity: 0;
             pointer-events: none;
-            transition: all 0.4s ease, opacity 1s ease 3.5s;
+            transition: all 0.3s ease, opacity 0.8s ease 2.8s;
         }
 
         body.is-opened .btn-map {
@@ -312,16 +312,15 @@
 
     <div class="card" id="card">
         <svg class="card-leaf" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <path d="M50 80 C 40 70, 20 50, 25 30 C 30 10, 50 20, 50 40 C 50 20, 70 10, 75 30 C 80 50, 60 70, 50 80 Z" opacity="0.8"/>
-            <path d="M50 40 L 50 85" stroke="var(--card-bg)" stroke-width="2" fill="none"/>
+            <path d="M50 85 C 40 75, 15 50, 25 30 C 33 15, 50 30, 50 45 C 50 30, 67 15, 75 30 C 85 50, 60 75, 50 85 Z" fill="var(--gold)" opacity="0.8"/>
         </svg>
 
         <div class="families">
-            <div>GÜLAY - ALİ<br>DİZİBÜYÜK</div>
-            <div>AYŞEGÜL - FATİH<br>KIZILDAĞ</div>
+            <div>GÜLAY & ALİ<br>DİZİBÜYÜK</div>
+            <div>AYŞEGÜL & FATİH<br>KIZILDAĞ</div>
         </div>
 
-        <div class="couple-names">Zeynep -<br>Hüseyin Kaan</div>
+        <div class="couple-names">Zeynep &<br>Hüseyin Kaan</div>
 
         <div class="quote">
             Bu mutlu günümüzde sizleri de<br>
@@ -331,8 +330,7 @@
 
         <div class="details">
             <div class="venue">MARİNA</div>
-            15 AĞUSTOS 2026 Cumartesi<br>
-            19.00
+            15.08.2026 • 19.00
         </div>
 
         <a href="https://www.google.com/maps/search/?api=1&query=MARİNA+DÜĞÜN+SALONU+KAHRAMANMARAŞ" target="_blank" class="btn-map">
@@ -345,10 +343,10 @@
 
     <div class="envelope-front">
         <svg class="env-leaf" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <path d="M50 80 C 40 70, 20 50, 25 30 C 30 10, 50 20, 50 40 C 50 20, 70 10, 75 30 C 80 50, 60 70, 50 80 Z"/>
+            <path d="M50 85 C 40 75, 15 50, 25 30 C 33 15, 50 30, 50 45 C 50 30, 67 15, 75 30 C 85 50, 60 75, 50 85 Z" fill="var(--gold)"/>
         </svg>
-        <div class="env-names">Zeynep -<br>Hüseyin Kaan</div>
-        <div class="env-date">15 AĞUSTOS 2026</div>
+        <div class="env-names">Zeynep &<br>Hüseyin Kaan</div>
+        <div class="env-date">15.08.2026</div>
     </div>
 </div>
 
@@ -363,7 +361,7 @@
 
                 setTimeout(() => {
                     body.classList.add('is-centered');
-                }, 2500);
+                }, 2000);
             }
         });
     });
