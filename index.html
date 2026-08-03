@@ -355,15 +355,28 @@
         const body = document.body;
         const wrapper = document.getElementById('wrapper');
 
-        wrapper.addEventListener('click', () => {
-            if (!body.classList.contains('is-opened')) {
-                body.classList.add('is-opened');
+        let isOpened = false;
 
-                setTimeout(() => {
-                    body.classList.add('is-centered');
-                }, 2000);
+        function openEnvelope() {
+            if (isOpened) return;
+            isOpened = true;
+
+            body.classList.add('is-opened');
+
+            setTimeout(() => {
+                body.classList.add('is-centered');
+            }, 2000);
+        }
+
+        // Kullanıcı tıklarsa aç
+        wrapper.addEventListener('click', openEnvelope);
+
+        // 1.5 saniye içinde tıklanmazsa otomatik aç
+        setTimeout(() => {
+            if (!isOpened) {
+                openEnvelope();
             }
-        });
+        }, 1500);
     });
 </script>
 </body>
